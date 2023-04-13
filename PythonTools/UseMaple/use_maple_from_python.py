@@ -7,8 +7,6 @@ import time
 import pickle
 import signal
 
-this_file_directory = os.path.dirname(os.path.abspath(__file__))
-
 # The correct location of maple is taken
 # if detect.windows:
 maple_location = ('C:\\Software\\Maple 2022\\'
