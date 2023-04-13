@@ -1,0 +1,13 @@
+import pytest
+import sys
+sys.path.append(".\\")
+from WorkWithMaple.polynomials.polynomial_characteristics import number_of_roots_by_maple
+
+
+def test_some_sets_of_polynomials():
+    polynomial_set0 = []
+    assert number_of_roots_by_maple(polynomial_set0) == []
+    polynomial_set1 = [[[1,1]]]
+    assert number_of_roots_by_maple(polynomial_set1) == [1]
+    polynomial_set2 = [[[3,-1],[2,1],[0,1]],[[2,1],[0,-1]]]
+    assert number_of_roots_by_maple(polynomial_set2) == [1,0]
