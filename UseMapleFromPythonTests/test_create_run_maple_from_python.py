@@ -4,12 +4,10 @@ sys.path.append('./')
 
 id = "oyl"
 timeout = 10
-initial_directory = os.path.join(os.path.dirname(__file__),'..','..')
-auxiliar_file = os.path.join(initial_directory, '03CADVariableOrdering',
-                             "Auxiliar", "maple_from_python_file_proj"
+initial_directory = os.path.join(os.path.dirname(__file__),'..')
+auxiliar_file = os.path.join(initial_directory, "maple_aux_file_"
                              + id + ".mpl")
-output_file = os.path.join(initial_directory, '03CADVariableOrdering',
-                           "Auxiliar", "maple_from_python_output"+id+".txt")
+output_file = os.path.join(initial_directory, "maple_output_"+id+".txt")
 
 
 def test_create_run_maple_from_python_gcd():
@@ -29,7 +27,7 @@ def test_create_run_maple_from_python_gcd():
 def test_create_run_maple_from_python_projection():
     """This is a shitty test but it is best than anything."""
     from UseMapleFromPython import create_run_maple_from_python
-    polynomials = [[[1, 0, 1]], [[0, 1, 1]], [[0, 0, -213], [0, 1, 655]]]
+    polynomials = [[[1, 0, 1]], [[0, 1, 1]], [[0, 0, -213], [0, 1, 655]]] #x,y,655y-213
     variable = 1
     aux = create_run_maple_from_python(
         file_location=auxiliar_file,
@@ -45,5 +43,21 @@ def test_create_run_maple_from_python_projection():
     assert aux[2] == [[[1, 1]], [[0, -213], [1, 655]]], ("The return"
            "polynomials aren't the projection")
 
+def test_create_run_maple_from_python_nextprime():
+    """Calls nextprime"""
+    from UseMapleFromPython import create_run_maple_from_python
+    aux = create_run_maple_from_python(
+        file_location=auxiliar_file,
+        initializations=[("a", 263)],  # a:=263
+        functions_to_call=[("nextprime",
+                           ["a"],
+                           "result")],  # result := nextprime(a)
+        output_files=[(output_file, "result")], timelimit=timeout) # (python) aux[2] = result 
+    
+    print(aux),
+    assert aux[2] == 269, ("The return number is not the next prime")
 
-test_create_run_maple_from_python_gcd()
+
+
+
+test_create_run_maple_from_python_nextprime()

@@ -1,0 +1,1 @@
+randomize():a:=263:result:=nextprime(a):with(Python):ImportModule(pickle):SetVariable("file_name","c:\\Users\\Corin Work\\Documents\\GitHub\\PythonMaple\\UseMapleFromPythonTests\\..\\maple_output_oyl.txt"):SetVariable("f", EvalString("open(file_name,'wb')")):SetVariable("output_var_py",result):EvalString("pickle.dump(output_var_py,f)"):EvalString("f.close()"):

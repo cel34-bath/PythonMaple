@@ -1,7 +1,6 @@
 """This module provides an easy way of calling Maple from Python."""
 # IF THIS CODE WERE TO STOP WORKING CHECK THE " AND THE ' WHEN CALLING MAPLE
 import os
-import detect
 import subprocess
 import time
 import pickle
@@ -9,7 +8,7 @@ import signal
 
 # The correct location of maple is taken
 # if detect.windows:
-maple_location = ('C:\\Software\\Maple 2022\\'
+maple_location = ('C:\\Program Files\\Maple 2023\\'
                       'bin.X86_64_WINDOWS\\cmaple.exe')
 # elif detect.linux:
 #     # maple_location = os.path.join( "/opt", "maple2021", "bin", "maple")
@@ -115,14 +114,9 @@ def create_run_maple_from_python(
     final_list_subprocess = ([maple_location] + ["-i"] + [file_location]
                              + ["-c"] + ["quit():"])
 
-    if detect.windows:
-        print(final_list_subprocess)
-        task = subprocess.Popen(
+    print(final_list_subprocess)
+    task = subprocess.Popen(
             final_list_subprocess, stdout=subprocess.PIPE)
-    elif detect.linux:
-        task = subprocess.Popen(
-            final_list_subprocess, stdout=subprocess.PIPE,
-            preexec_fn=os.setsid)
 
     # the program is run and timed
     start_time = time.time()
@@ -130,20 +124,10 @@ def create_run_maple_from_python(
     try:
         result, errs = task.communicate(timeout=timelimit)
     except subprocess.TimeoutExpired:
-        if detect.windows:
-            task.kill()
-        elif detect.linux:
-            taskid = task.pid
-            os.killpg(os.getpgid(taskid), signal.SIGTERM)
-            os.system("kill -9 "+str(taskid))
+        task.kill()
         subprocess_works = 2
     except: # noqa E722
-        if detect.windows:
-            task.kill()
-        elif detect.linux:
-            taskid = task.pid
-            os.killpg(os.getpgid(taskid), signal.SIGTERM)
-            os.system("kill -9 "+str(taskid))
+        task.kill()
         print("Calling Maple gave some error.")
         subprocess_works = 0
     time_to_run = time.time()-start_time
